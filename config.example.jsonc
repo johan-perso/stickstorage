@@ -1,0 +1,120 @@
+{
+	// Port utilisé pour le serveur web | défaut : 80
+	"port": 80,
+
+	// URL de base utilisé pour le serveur web | défaut : /
+	"baseUrl": "/",
+
+	// Afficher les fichiers README.md et README.txt quand on regarde un dossier depuis le client web | défaut : true
+	"showReadme": true,
+
+	/* Type de page d'accueil | défaut : index.html
+	    - "none" : Aucune, erreur 404
+	    - "index.html" : Fichier web --> index.html
+	    - "rootFolder" : Afficher le dossier racine
+	*/
+	"homePage": "index.html",
+
+	/* Type de page d'erreur 404 | défaut : 404.html
+	    - "none" : Aucune réponse (ptdr mauvaise idée)
+	    - "404.html" : Fichier web --> 404.html
+	    - "redirection:<url>" : Redirection vers une URL
+	*/
+	"errorPage": "404.html",
+
+	// IP bloquée | défaut : []
+	// (si vide, aucune IP bloquée)
+	"blockedIp": [],
+
+	// IP autorisée | défaut : []
+	// (si vide, toutes les IP sont autorisées)
+	"allowedIp": [],
+
+	// Activer ou désactiver le fait de pouvoir télécharger un dossier en faisant un CTRL+S | défaut : true
+	// (Une requête par fichier téléchargé)
+	"downloadFolder": true,
+
+	// Liste d'archives (avec l'url /archive)
+	// (si vide, aucune archive disponible)
+	"archives": [
+		{
+			"name": "Ancien Twitterminal",
+			"url": "https://storage-bf183.firebaseapp.com/archive/twitterminal/index.html"
+		},
+		{
+			"name": "OsNul.html",
+			"url": "https://storage-bf183.firebaseapp.com/archive/osnul/index.html"
+		}
+	],
+
+	// Dossier protégé par mot de passe | défaut : []
+	// (si vide et authentification globale désactivé, aucun dossier protégé)
+	"protectedFolder": [
+		{
+			"name": "mon-chat",
+			"password": "ErkLesNyanCats"
+		},
+		{
+			"name": "photo-famille",
+			"password": "Aucun rapport mais erk les nyan cats"
+		}
+	],
+
+	// Dossier inaccessible | défaut : []
+	// (si vide, aucun dossier inaccessible)
+	"inaccessibleFolder": [
+		"projet-secret",
+		"trailer-secret"
+	],
+
+	// Rate limit
+	"rateLimit": {
+		// Nombre de fois à regarder un dossier en une minute avant d'être bloqué | défaut : 50
+		"folder": 50,
+
+		// Nombre de fois à regarder un fichier en une minute avant d'être bloqué (s'applique uniquement pour les fichiers hébergés localement) | défaut : 400
+		"file": 400
+	},
+
+	// Customisation du client web
+	"customization": {
+		// Nom du site - meta : "og:title" | défaut : "Storage"
+		"name": "Storage",
+
+		// Description du site - meta og:description | défaut : "Hébergeur de fichiers"
+		"description": "Hébergeur de fichiers",
+
+		// Icône du site (le fichier doit être dans le dossier "public") - favicon
+		"icon": "",
+
+		// Bannière du site (le fichier doit être dans le dossier "public") - meta og:image
+		"banner": ""
+	},
+
+	// Authentification globale requise pour chaque page du site
+	"globalAuthentication": {
+		// Activer l'authentification par mot de passe | défaut : false
+		"enabled": false,
+
+		// Mot de passe | défaut : "p@ssw0rd"
+		"password": "p@ssw0rd"
+	},
+
+	// Paramètres d'enregistrement des fichiers
+	"fileStorage": {
+		/* Où sont enregistrer les fichiers | défaut : "local"
+			- "local" : localement, sur son propre disque
+			- "firebase" : https://firebase.google.com/docs/storage
+			- "supabase" : https://supabase.com/docs/guides/storage
+		*/
+		"type": "local",
+
+		// Dossier racine (s'applique uniquement quand on héberge les fichiers localement) | défaut : "servedFiles"
+		// ⚠️ Tout les élements présent dans ce dossier pourront être potentiellement lu par le monde entier.
+		// ⚠️ Eviter d'utiliser un dossier contenant des informations sensibles (mot de passe, etc.)
+		"rootFolder": "servedFiles",
+
+		// Accéder ou non à la liste des dossiers et fichiers présents dans le dossier racine | défaut : true
+		"accessRootFolder": true
+	}
+}

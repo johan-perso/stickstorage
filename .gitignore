@@ -1,0 +1,12 @@
+# Variables d'environnements
+.env
+
+# Cache Vercel
+.vercel
+
+# Modules NodeJS
+node_modules
+package-lock.json
+
+# Configuration
+config.jsonc

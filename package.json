@@ -1,0 +1,28 @@
+{
+  "name": "stickstorage",
+  "version": "3.0.0",
+  "description": "Serveur web permettant de stocker des fichiers et de laisser le public les télécharger",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "checkConfig": "node cli.js",
+    "build_tailwindcss": "npx tailwindcss -i ./pre_styles-tailwind.css -o ./public/style.css"
+  },
+  "author": "JohanStickman",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^6.4.0",
+    "firebase": "^9.8.1",
+    "jsonc": "^2.0.0"
+  },
+  "devDependencies": {
+    "daisyui": "^2.15.0",
+    "nodemon": "^2.0.16",
+    "tailwindcss": "^3.0.24"
+  }
+}
