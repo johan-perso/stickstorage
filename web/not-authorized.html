@@ -1,0 +1,35 @@
+<!-- https://github.com/johan-perso/storage -->
+
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+	<!-- Quelques trucs -->
+	<title>%CUSTOMIZATION_SETTINGS_TITLE%</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="%BASE_URL%style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+	<!-- Meta tag pour les réseaux -->
+	<meta property="og:title" content="%CUSTOMIZATION_SETTINGS_TITLE%">
+	<meta property="og:description" content="%CUSTOMIZATION_SETTINGS_DESCRIPTION%">
+	<meta property="og:image" content="%CUSTOMIZATION_SETTINGS_BANNER%">
+	<link rel="icon" href="%CUSTOMIZATION_SETTINGS_ICON%" />
+
+	<!-- Script -->
+	<script>
+		if(document.querySelector('meta[property="storage:errorReason"]')?.content) alert(document.querySelector('meta[property="storage:errorReason"]').content)
+	</script>
+</head>
+<body class="hero min-h-screen px-2">
+	<div class="absolute">
+		<p class="fixed left-2 bottom-2 text-xs opacity-50"><a href="https://github.com/johan-perso/storage">johan-perso/storage</a><br>%STORAGE_VERSION%</p>
+	</div>
+
+	<div class="text-center">
+		<h1 class="text-5xl font-bold">Non autorisé</h1>
+		<p class="text-xl mt-2 mb-4">🚨 Alerte ! un intrus a été détecté, attend, c'est toi?</p>
+		<button onclick="window.history.go(-1)" alt="Aller en arrière" type="button" class="bg-gray-800 hover:bg-gray-900 outline-none focus:ring-4 focus:ring-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2">Retourner en arrière</button>
+	</div>
+</body>
+</html>

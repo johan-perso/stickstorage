@@ -1,0 +1,68 @@
+<!-- https://github.com/johan-perso/storage -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Quelques trucs -->
+	<title>%CUSTOMIZATION_SETTINGS_TITLE%</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link href="%BASE_URL%style.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+	<link href="%BASE_URL%gh-markdown.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.3/showdown.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/Stuk/jszip@master/dist/jszip.min.js"></script>
+
+	<!-- Meta tag pour les réseaux -->
+	<meta property="og:title" content="%CUSTOMIZATION_SETTINGS_TITLE%">
+	<meta property="og:description" content="%CUSTOMIZATION_SETTINGS_DESCRIPTION%">
+	<meta property="og:image" content="%CUSTOMIZATION_SETTINGS_BANNER%">
+	<link rel="icon" href="%CUSTOMIZATION_SETTINGS_ICON%" />
+
+	<!-- Afficher un README -->
+	<script>
+		window.onload = async function(){
+			// Si il y a un readme, l'obtenir
+			var readme = document.querySelector('meta[property="storage:readme"]')
+			if(readme) readme = await fetch(readme.content).catch(err => {return;})
+
+			// Si il y a pas de readme, aaaaadieuuuu
+			if(!readme || !readme?.ok) return
+
+			// Crée un élement HTML
+			var div = `<div class="p-6 max-w-md md:max-w-lg lg:max-w-xl xl:max-w-5xl rounded-lg shadow-md bg-gray-800"><article id="readmeContainer" class="markdown-body hidden" style="background-color: transparent;"><h1 style="border-bottom: 2px solid #3e4855; padding-bottom: 20px;">README</h1></article></div>`
+			document.getElementById('mainContainer').insertAdjacentHTML('beforeend', div)
+
+			// Parse le readme (markdown vers HTML)
+			readme = await readme.text()
+			document.getElementById('readmeContainer').innerHTML += new showdown.Converter().makeHtml(readme);
+
+			// Affiche le readme
+			document.getElementById('readmeContainer').classList.remove('hidden')
+		}
+	</script>%DOWNLOAD_FOLDER_SCRIPT%
+</head>
+<body data-theme="dark" class="min-h-screen grid place-items-center px-2 py-1">
+	<div class="absolute">
+		<p class="fixed left-2 bottom-2 text-xs opacity-50"><a href="https://github.com/johan-perso/storage">johan-perso/storage</a><br>%STORAGE_VERSION%</p>
+	</div>
+
+	<div class="absolute">
+		<h1 id="infoText" class="fixed right-2 bottom-2 opacity-50"></h1>
+	</div>
+
+	<div id="mainContainer" class="space-y-2">
+		<div class="outline-none p-6 max-w-md md:max-w-lg lg:max-w-xl xl:max-w-5xl rounded-lg shadow-md bg-gray-800">
+			<h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Dossier : %FOLDER_NAME%</h5>
+
+			<div class="space-y-1">
+				<a onclick="javascript:history.go(-1)" href="#" class="w-full sm:w-auto inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 bg-blue-700 hover:bg-blue-800 focus:ring-blue-900">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+					<span class="ml-2">Retour en arrière</span>
+				</a>
+				%BUTTONS%
+			</div>
+		</div>
+	</div>
+</body>
+</html>
