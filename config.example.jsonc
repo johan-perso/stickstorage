@@ -109,7 +109,7 @@
 		*/
 		"type": "local",
 
-		// Dossier racine (s'applique uniquement quand on héberge les fichiers localement) | défaut : "servedFiles"
+		// Dossier racine | défaut : "servedFiles"
 		// ⚠️ Tout les élements présent dans ce dossier pourront être potentiellement lu par le monde entier.
 		// ⚠️ Eviter d'utiliser un dossier contenant des informations sensibles (mot de passe, etc.)
 		"rootFolder": "servedFiles",
