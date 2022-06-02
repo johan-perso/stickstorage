@@ -157,6 +157,12 @@ app.use((req, res, next) => {
 	if(config?.fileStorage?.type == 'supabase') var supabase;
 
 // Ajouter des pages au site
+	// Si on veut son IP
+	app.get('/ip', async (req, res) => {
+		var ip = req.ip || req.connection.remoteAddress || req.socket.remoteAddress || req.headers['x-forwarded-for']
+		return res.set('Content-Type', 'text/plain').send(ip)
+	})
+
 	// Accueil
 	if(config?.homePage != 'none') app.get('/', async (req, res) => {
 		if(config?.homePage == 'index.html') return res.send(readFileSync(path.join(__dirname, 'web', 'index.html')))
