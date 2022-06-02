@@ -84,10 +84,10 @@
 		// Description du site - meta og:description | défaut : "Hébergeur de fichiers"
 		"description": "Hébergeur de fichiers",
 
-		// Icône du site (le fichier doit être dans le dossier "public") - favicon
+		// Icône du site - favicon
 		"icon": "",
 
-		// Bannière du site (le fichier doit être dans le dossier "public") - meta og:image
+		// Bannière du site - meta og:image
 		"banner": ""
 	},
 
@@ -100,7 +100,7 @@
 		"password": "p@ssw0rd"
 	},
 
-	// Paramètres d'enregistrement des fichiers
+	// Paramètres de stockage des fichiers
 	"fileStorage": {
 		/* Où sont enregistrer les fichiers | défaut : "local"
 			- "local" : localement, sur son propre disque
