@@ -1,20 +1,20 @@
 // Lazy Load Modules
 var _require = require;
 var require = function (moduleName) {
-    var module;
-    return new Proxy(function () {
-        if (!module) {
-            module = _require(moduleName)
-        }
-        return module.apply(this, arguments)
-    }, {
-        get: function (target, name) {
-            if (!module) {
-                module = _require(moduleName)
-            }
-            return module[name];
-        }
-    })
+	var module;
+	return new Proxy(function () {
+		if (!module) {
+			module = _require(moduleName)
+		}
+		return module.apply(this, arguments)
+	}, {
+		get: function (target, name) {
+			if (!module) {
+				module = _require(moduleName)
+			}
+			return module[name];
+		}
+	})
 };
 
 // Importer quelques librairies
@@ -40,7 +40,7 @@ function readFileSync(file, options){
 	var content = fs.readFileSync(file, options)
 	return content.toString()
 	.replace(/%STORAGE_VERSION%/g, require('./package.json').version)
-	.replace(/%BASE_URL%/g, config.baseUrl)
+	.replace(/%BASE_URL%/g, config.baseUrl || '/')
 	.replace(/%CUSTOMIZATION_SETTINGS_TITLE%/g, config?.customization?.name || "")
 	.replace(/%CUSTOMIZATION_SETTINGS_DESCRIPTION%/g, config?.customization?.description || "")
 	.replace(/%CUSTOMIZATION_SETTINGS_ICON%/g, config?.customization?.icon || "")
@@ -78,7 +78,7 @@ async function generateFolder(res, name, items){
 		if(config.showReadme == true && (item?.name?.toLowerCase() === "readme.md" || item?.name?.toLowerCase() === "readme.txt")) readMeLink = item.url
 
 		// Ajouter le bouton
-		buttons += `\n<a name="${encodeURIComponent(item.name)}" type="${item.type}" href="${item.url.toString().replace(/"/g,"\\'")}" class="outline-none w-full sm:w-auto inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">${icon||''}<span class="ml-2">${item.name?.replace(/</g,'&')}</span></a>`
+		buttons += `\n<a name="${encodeURIComponent(item.name)}" type="${item.type}" href="${item.url.toString().replace(/"/g,"\\'")}" class="w-full sm:w-auto inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg focus:ring-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">${icon||''}<span class="ml-2">${item.name?.replace(/</g,'&')}</span></a>`
 	})
 
 	// Modifier (encore) la page du dossier
@@ -160,7 +160,7 @@ app.use((req, res, next) => {
 	// Accueil
 	if(config?.homePage != 'none') app.get('/', async (req, res) => {
 		if(config?.homePage == 'index.html') return res.send(readFileSync(path.join(__dirname, 'web', 'index.html')))
-		if(config?.homePage == 'rootFolder') return res.redirect('/storage/index-rootFolder')
+		if(config?.homePage == 'rootFolder') return res.redirect(`${config.baseUrl || '/'}storage/index-rootFolder`)
 	})
 
 	// Archives
@@ -232,6 +232,7 @@ app.use((req, res, next) => {
 				if(!firebaseApp) firebaseApp = firebase.initializeApp(firebaseConfig);
 
 				// Obtenir tout les fichiers à partir du dossier mit dans les paramètres de la requête
+				var cancelled = false;
 				if(!firebaseStorage) firebaseStorage = firebaseStorageModule.getStorage(firebaseApp);
 				var listRef = firebaseStorageModule.ref(firebaseStorage, pathToSearch);
 				var list = await firebaseStorageModule.listAll(listRef).catch(err => {
@@ -254,10 +255,10 @@ app.use((req, res, next) => {
 				if(config?.inaccessibleFolder?.length && files.length) files = files.filter(file => !config.inaccessibleFolder.includes(file.name))
 
 				// Si il y a aucun fichier
-				if(!files.length) return res.status(404).send(readFileSync(path.join(__dirname, 'web', '404.html')))
+				if(cancelled == false && !files.length) return res.status(404).send(readFileSync(path.join(__dirname, 'web', '404.html')))
 
 				// Générer la page
-				await generateFolder(res, (pathToSearch.length > config?.fileStorage?.rootFolder?.length ? pathToSearch.replace((pathToSearch.startsWith(config?.fileStorage?.rootFolder) ? config?.fileStorage?.rootFolder : ''), '') : '/'), files)
+				if(cancelled == false) await generateFolder(res, (pathToSearch.length > config?.fileStorage?.rootFolder?.length ? pathToSearch.replace((pathToSearch.startsWith(config?.fileStorage?.rootFolder) ? config?.fileStorage?.rootFolder : ''), '') : '/'), files)
 			}
 
 			// Si c'est Supabase
@@ -397,7 +398,7 @@ app.use((req, res, next) => {
 			file = fs.readFileSync(path.join(pathToSearch.replace(/\.\.\//g, '')))
 		} catch(e) {
 			// Si c'est un dossier
-			if(e.code == 'EISDIR') return res.redirect(`/storage/${pathToSearch}/`)
+			if(e.code == 'EISDIR') return res.redirect(`${config.baseUrl || '/'}storage/${pathToSearch}/`)
 		}
 
 		// Si le fichier n'existe pas
@@ -421,6 +422,6 @@ app.use((req, res, next) => {
 const server = app.listen(process.env.PORT || config.port || 4907, () => {
 	if(config.port && process.env.PORT && process.env.PORT !== config.port) console.log(`[WARN] La configuration utilise le port ${config.port}, mais celui-ci a aussi été défini dans les variable d'enviroment avec le port ${process.env.PORT}.`)
 	if(!config.port && !process.env.PORT) console.log(`[WARN] La configuration n'a pas de port défini, le port ${server.address().port} a donc été utilisé.`)
-    console.log(`Serveur web démarré sur le port ${server.address().port}`);
+	console.log(`Serveur web démarré sur le port ${server.address().port}`);
 	console.log(`Chemin de la configuration : ${path.join(__dirname, 'config.jsonc')}`)
 });
