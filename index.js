@@ -195,6 +195,9 @@ app.use((req, res, next) => {
 		// Si on essaye d'accéder à la racine et que son accès est bloqué, afficher la page non autorisé
 		if(pathToSearch == '' && config?.fileStorage?.accessRootFolder == false) return res.status(401).send(`<meta property="storage:errorReason" content="Accès au dossier racine bloqué">\n\n` + readFileSync(path.join(__dirname, 'web', 'not-authorized.html')))
 
+		// Si on tente de naviguer en arrière
+		if(pathToSearch.includes('..')) return res.status(401).send(`<meta property="storage:errorReason" content="Navigation en arrière interdite">\n\n` + readFileSync(path.join(__dirname, 'web', 'not-authorized.html')))
+
 		// Si le dossier est interdit d'accès selon la configuration
 		if(config?.inaccessibleFolder?.includes(pathToSearch)) return res.status(401).send(`<meta property="storage:errorReason" content="Dossier interdit d'accès">\n\n` + readFileSync(path.join(__dirname, 'web', 'not-authorized.html')))
 
@@ -370,6 +373,9 @@ app.use((req, res, next) => {
 		if(pathToSearch == undefined) pathToSearch = `${config?.fileStorage?.rootFolder}/${req.params.path}`
 		pathToSearch = pathToSearch.replace(/\/+/g, '/')
 		if(pathToSearch.startsWith('/')) pathToSearch = pathToSearch.substr(1)
+
+		// Si on tente de naviguer en arrière
+		if(pathToSearch.includes('..')) return res.status(401).send(`<meta property="storage:errorReason" content="Navigation en arrière interdite">\n\n` + readFileSync(path.join(__dirname, 'web', 'not-authorized.html')))
 
 		// Si le fichier est interdit d'accès selon la configuration
 		if(config?.inaccessibleFolder?.includes(pathToSearch)) return res.status(401).send(`<meta property="storage:errorReason" content="Fichier interdit d'accès">\n\n` + readFileSync(path.join(__dirname, 'web', 'not-authorized.html')))
