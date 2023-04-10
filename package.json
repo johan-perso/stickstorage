@@ -1,6 +1,6 @@
 {
   "name": "stickstorage",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Serveur web permettant de stocker des fichiers et de laisser le public les télécharger",
   "main": "index.js",
   "scripts": {
