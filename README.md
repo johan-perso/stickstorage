@@ -23,4 +23,4 @@ Le wiki est disponible [ici](https://github.com/johan-perso/stickstorage/wiki).
 
 ## Licence
 
-MIT © [Johan](https://johanstick.me)
+MIT © [Johan](https://johanstick.fr)
